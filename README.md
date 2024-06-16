@@ -1,6 +1,6 @@
 <div align="center">
 
-# Cuby capture website
+# Cuby capture API
 
 ---
 
