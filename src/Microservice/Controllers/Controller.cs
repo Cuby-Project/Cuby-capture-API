@@ -15,7 +15,7 @@ namespace Microservice.Controllers
         }
 
         [HttpGet(Name = "Get")]
-        public OkResult Get()
+        public IActionResult Get()
         {
             return Ok();
         }

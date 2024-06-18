@@ -7,13 +7,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{196C4532-861
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract", "src\Contract\Contract.csproj", "{54953130-9C7F-4F36-B74C-49946449F2F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Impl", "src\Impl\Impl.csproj", "{DEBFE3FA-A59C-4A35-954B-B1AD833737CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Impl", "src\Impl\Impl.csproj", "{DEBFE3FA-A59C-4A35-954B-B1AD833737CA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{54953130-9C7F-4F36-B74C-49946449F2F6} = {54953130-9C7F-4F36-B74C-49946449F2F6}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservice", "src\Microservice\Microservice.csproj", "{C0FBB237-02EC-4495-968C-6D8D9FBE42DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice", "src\Microservice\Microservice.csproj", "{C0FBB237-02EC-4495-968C-6D8D9FBE42DC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F731043A-8839-4AC3-80CC-ED76500344ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unit-tests", "src\tests\unit-tests\unit-tests.csproj", "{EBF9519F-1BF1-4831-8EA0-D2CA21A49992}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "unit-tests", "src\tests\unit-tests\unit-tests.csproj", "{EBF9519F-1BF1-4831-8EA0-D2CA21A49992}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "py-core", "py-core", "{90579032-9CCD-44FF-8E2C-F952CDC2AF78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +52,7 @@ Global
 		{C0FBB237-02EC-4495-968C-6D8D9FBE42DC} = {196C4532-8611-49E4-9C29-EE7B9C47D86D}
 		{F731043A-8839-4AC3-80CC-ED76500344ED} = {196C4532-8611-49E4-9C29-EE7B9C47D86D}
 		{EBF9519F-1BF1-4831-8EA0-D2CA21A49992} = {F731043A-8839-4AC3-80CC-ED76500344ED}
+		{90579032-9CCD-44FF-8E2C-F952CDC2AF78} = {196C4532-8611-49E4-9C29-EE7B9C47D86D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {349FC568-8417-4017-9403-7D41040E885E}
