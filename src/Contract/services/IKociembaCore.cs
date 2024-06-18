@@ -15,6 +15,5 @@
         /// <param name="cube">the cube string representation</param>
         /// <returns>the solve solution</returns>
         string Solve(string cube);
-
     }
 }
