@@ -8,9 +8,9 @@ namespace Impl
     public class KociembaCore : IKociembaCore
     {
         // <inheritdoc />
-        public bool CheckValidity(string cube)
+        public int CheckValidity(string cube)
         {
-            throw new NotImplementedException();
+            return Kociemba.Tools.verify(cube);
         }
 
         // <inheritdoc />
