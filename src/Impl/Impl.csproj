@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Contract\Contract.csproj" />
-    <ProjectReference Include="..\Kociemba\Kociemba.csproj" />
   </ItemGroup>
 
 </Project>

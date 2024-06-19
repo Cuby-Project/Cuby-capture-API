@@ -10,7 +10,7 @@ namespace Impl
         // <inheritdoc />
         public int CheckValidity(string cube)
         {
-            return Kociemba.Tools.verify(cube);
+            throw new NotImplementedException();
         }
 
         // <inheritdoc />
