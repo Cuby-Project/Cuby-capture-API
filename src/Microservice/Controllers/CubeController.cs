@@ -35,7 +35,7 @@ namespace Microservice.Controllers
         {
             try
             {
-                if (!_service.CheckValidity(cube))
+                if (_service.CheckValidity(cube) != 0)
                 {
                     return BadRequest();
                 }
@@ -44,7 +44,7 @@ namespace Microservice.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error while solving the cube");
-                return BadRequest();
+                return Problem();
             }
         }
     }
