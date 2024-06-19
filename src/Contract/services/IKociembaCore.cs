@@ -13,7 +13,7 @@
         ///         -4: Not all 8 corners exist exactly once<br>
         ///         -5: Twist error: One corner has to be twisted<br>
         ///         -6: Parity error: Two corners or two edges have to be exchanged </returns>
-        int CheckValidity(string cube);
+        bool CheckValidity(string cube);
 
         /// <summary>
         /// Solves the cube
