@@ -31,15 +31,15 @@ namespace Microservice.Controllers
         [HttpGet("solve", Name = "solve")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Get(string cube)
+        public async Task<IActionResult> Get(string cube)
         {
             try
             {
-                if (_service.CheckValidity(cube) != 0)
+                if (_service.CheckValidity(cube).Result)
                 {
                     return BadRequest();
                 }
-                return Ok(_service.Solve(cube));
+                return Ok(await _service.Solve(cube));
             }
             catch (Exception ex)
             {
