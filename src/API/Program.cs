@@ -1,3 +1,6 @@
+using Cuby.Data;
+using Cuby.Middlewares;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cuby.API
 {
@@ -10,6 +13,11 @@ namespace Cuby.API
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            // Configure PostgreSQL connection
+            var connectionString = builder.Configuration.GetConnectionString("DbCOnnectionString");
+            builder.Services.AddDbContext<RequestDbContext>(options =>
+                options.UseNpgsql(connectionString));
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -29,11 +37,11 @@ namespace Cuby.API
                     options.RoutePrefix = string.Empty;
                 });
             }
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

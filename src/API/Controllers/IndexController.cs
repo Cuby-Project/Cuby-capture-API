@@ -1,23 +1,38 @@
+using Cuby.Services.interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cuby.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class IndexController(ILogger<IndexController> logger) : ControllerBase
+    public class IndexController(ILogger<IndexController> logger, IRequestService service) : ControllerBase
     {
-        [HttpGet(Name = "GetTest")]
-        public IActionResult Get()
+        [HttpGet(Name = "init a request")]
+        public async Task<ActionResult<string>> InitSolveRequest()
         {
             try
             {
-                logger.LogInformation("Get request received");
-                return Ok();
-            } catch (Exception)
+                string id = await service.InitiateRequest();
+                return Ok(id);
+            } catch (Exception e)
             {
-                logger.LogError("An error occurred while processing the request");
-                return Problem();
+                logger.LogError(e, "Initiate request throws an error");
+                return Problem("error during the request initialisation proccess");
             }
         }
+
+        [HttpPost(Name = "Recieve cube pictures from user")]
+        public async Task<ActionResult> RecieveCubePictures()
+        {
+            try
+            {
+                return Ok();
+            } catch (Exception e)
+            {
+                logger.LogError(e, "Recieve cube pictures request throws an error");
+                return Problem("error during the recieve cube pictures proccess");
+            }
+        }
+
     }
 }
