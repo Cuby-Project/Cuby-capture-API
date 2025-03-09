@@ -3,11 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cuby.API.Controllers
 {
+    /// <summary>
+    /// index controller
+    /// </summary>
+    /// <param name="logger">logger</param>
+    /// <param name="service">implementation of <see cref="IRequestService"/></param>
     [ApiController]
     [Route("[controller]")]
     public class IndexController(ILogger<IndexController> logger, IRequestService service) : ControllerBase
     {
+        /// <summary>
+        /// Endpoint to initialize a new solve request
+        /// </summary>
+        /// <returns>the request ID</returns>
         [HttpGet(Name = "init a request")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<string>> InitSolveRequest()
         {
             try
@@ -21,7 +32,13 @@ namespace Cuby.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Endpoint to recieve cube pictures from the user
+        /// </summary>
+        /// <returns></returns>
         [HttpPost(Name = "Recieve cube pictures from user")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> RecieveCubePictures()
         {
             try

@@ -26,9 +26,9 @@ public class RequestResponseLoggingMiddleware(RequestDelegate next,
 
     private void LogRequest(HttpContext context)
     {
-        var request = context.Request;
+        HttpRequest request = context.Request;
 
-        var requestLog = new StringBuilder();
+        StringBuilder requestLog = new StringBuilder();
         requestLog.AppendLine("Incoming Request:");
         requestLog.AppendLine($"HTTP {request.Method} {request.Path}");
         requestLog.AppendLine($"Host: {request.Host}");
@@ -40,9 +40,9 @@ public class RequestResponseLoggingMiddleware(RequestDelegate next,
 
     private void LogResponse(HttpContext context)
     {
-        var response = context.Response;
+        HttpResponse response = context.Response;
 
-        var responseLog = new StringBuilder();
+        StringBuilder responseLog = new StringBuilder();
         responseLog.AppendLine("Outgoing Response:");
         responseLog.AppendLine($"HTTP {response.StatusCode}");
         responseLog.AppendLine($"Content-Type: {response.ContentType}");
