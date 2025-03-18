@@ -24,6 +24,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cuby.Tests.Units", "test\Cu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{29AFCA35-D139-4FCA-905B-13D9DCBCBE8D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cuby.Tests.Integration", "test\Cuby.Tests.Integration\Cuby.Tests.Integration.csproj", "{6A80703F-65E8-4B5F-912A-5F69B268B9BB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{267FC97B-4EBD-4D94-A85C-8896FC675B18} = {267FC97B-4EBD-4D94-A85C-8896FC675B18}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +59,10 @@ Global
 		{1216FB3D-93A0-49D9-840C-BEDDBBB4362C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1216FB3D-93A0-49D9-840C-BEDDBBB4362C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1216FB3D-93A0-49D9-840C-BEDDBBB4362C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A80703F-65E8-4B5F-912A-5F69B268B9BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A80703F-65E8-4B5F-912A-5F69B268B9BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A80703F-65E8-4B5F-912A-5F69B268B9BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A80703F-65E8-4B5F-912A-5F69B268B9BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,5 +74,6 @@ Global
 		{B7FB14D8-6D74-4F19-BC23-60FEC01D6855} = {29AFCA35-D139-4FCA-905B-13D9DCBCBE8D}
 		{15039743-20C2-4181-B568-EDF4D71F4FEF} = {29AFCA35-D139-4FCA-905B-13D9DCBCBE8D}
 		{1216FB3D-93A0-49D9-840C-BEDDBBB4362C} = {58FB9E33-187D-4251-A97B-0C6E59E942B5}
+		{6A80703F-65E8-4B5F-912A-5F69B268B9BB} = {58FB9E33-187D-4251-A97B-0C6E59E942B5}
 	EndGlobalSection
 EndGlobal

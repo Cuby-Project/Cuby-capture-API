@@ -4,7 +4,6 @@ using Cuby.Middlewares;
 using Cuby.Services.impl;
 using Cuby.Services.interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using OpenTelemetry;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
@@ -23,10 +22,9 @@ namespace Cuby.API
             builder.Services.AddControllers();
 
             // Configure PostgreSQL connection
-            var connectionString = builder.Configuration.GetConnectionString("DbConnectionString");
             builder.Services.AddDbContext<RequestDbContext>(options =>
-                    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddScoped<IRequestService, RequestService>();
+                    options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionString")));
+            builder.Services.AddTransient<IRequestService, RequestService>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -56,6 +54,7 @@ namespace Cuby.API
                 .AddOtlpExporter(options =>
                 {
                     options.Endpoint = new Uri(builder.Configuration["OpenTelemetryExporterUrl"]!);
+                    options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
                 }));
             openTelemetry.WithMetrics(metrics => metrics
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("CubyCaptureAPI"))
@@ -64,6 +63,7 @@ namespace Cuby.API
                 .AddOtlpExporter(options =>
                 {
                     options.Endpoint = new Uri(builder.Configuration["OpenTelemetryExporterUrl"]!);
+                    options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
                 }));
 
             builder.Logging.AddOpenTelemetry(logging =>
@@ -72,6 +72,7 @@ namespace Cuby.API
                 logging.AddOtlpExporter(options =>
                 {
                     options.Endpoint = new Uri(builder.Configuration["OpenTelemetryExporterUrl"]!);
+                    options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
                 });
             });
 
@@ -89,6 +90,14 @@ namespace Cuby.API
                     options.RoutePrefix = string.Empty;
                 });
             }
+            // we retireve the db context and apply the migrations
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<RequestDbContext>();
+                context.Database.EnsureCreated();
+            }
+
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseHttpsRedirection();

@@ -1,3 +1,4 @@
+using Cuby.Data.dto;
 using Cuby.Services.interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,7 @@ namespace Cuby.API.Controllers
     /// <param name="logger">logger</param>
     /// <param name="service">implementation of <see cref="IRequestService"/></param>
     [ApiController]
-    [Route("[controller]")]
+    [Route("api")]
     public class IndexController(ILogger<IndexController> logger, IRequestService service) : ControllerBase
     {
         /// <summary>
@@ -24,6 +25,8 @@ namespace Cuby.API.Controllers
             try
             {
                 string id = await service.InitiateRequest();
+                await service.AddStepDone(id, RequestSteps.WaitingForUserCapture);
+                Console.WriteLine(id);
                 return Ok(id);
             } catch (Exception e)
             {
