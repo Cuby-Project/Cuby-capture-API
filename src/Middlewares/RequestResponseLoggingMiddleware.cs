@@ -1,53 +1,99 @@
-﻿using System.Text;
+﻿using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Cuby.Middlewares;
-
-public class RequestResponseLoggingMiddleware(RequestDelegate next,
-                                              ILogger<RequestResponseLoggingMiddleware> logger)
+namespace Cuby.Middlewares
 {
-    public async Task Invoke(HttpContext context)
+    /// <summary>
+    /// A custom middleware for logging HTTP requests and responses.
+    /// </summary>
+    public class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
     {
-        LogRequest(context);
+        private readonly RequestDelegate _next = next;
+        private readonly ILogger<RequestLoggingMiddleware> _logger = logger;
 
-        var originalBodyStream = context.Response.Body;
-        using (var responseBody = new MemoryStream())
+        /// <summary>
+        /// Invoke the middleware to log request and response details.
+        /// </summary>
+        public async Task InvokeAsync(HttpContext context)
         {
-            context.Response.Body = responseBody;
+            // Log the incoming request
+            await LogRequestAsync(context);
 
-            await next(context);
+            // Replace the response stream with a memory stream to capture the response for logging
+            var originalBodyStream = context.Response.Body;
+            using (var memoryStream = new MemoryStream())
+            {
+                context.Response.Body = memoryStream;
 
-            LogResponse(context);
+                // Invoke the next middleware in the pipeline
+                await _next(context);
 
-            await responseBody.CopyToAsync(originalBodyStream);
+                // Log the outgoing response
+                await LogResponseAsync(context);
+
+                // Copy the response back to the original stream
+                memoryStream.Position = 0;
+                await memoryStream.CopyToAsync(originalBodyStream);
+            }
         }
-    }
 
-    private void LogRequest(HttpContext context)
-    {
-        HttpRequest request = context.Request;
+        private async Task LogRequestAsync(HttpContext context)
+        {
+            var request = context.Request;
+            // Enable buffering to allow the request body to be read multiple times
+            request.EnableBuffering();
 
-        StringBuilder requestLog = new StringBuilder();
-        requestLog.AppendLine("Incoming Request:");
-        requestLog.AppendLine($"HTTP {request.Method} {request.Path}");
-        requestLog.AppendLine($"Host: {request.Host}");
-        requestLog.AppendLine($"Content-Type: {request.ContentType}");
-        requestLog.AppendLine($"Content-Length: {request.ContentLength}");
+            var builder = new StringBuilder();
+            builder.AppendLine("----- Incoming Request -----");
+            builder.AppendLine($"Timestamp   : {DateTime.UtcNow:O}");
+            builder.AppendLine($"Method      : {request.Method}");
+            builder.AppendLine($"Path        : {request.Path}{request.QueryString}");
 
-        logger.LogInformation(requestLog.ToString());
-    }
+            builder.AppendLine("Headers     :");
+            foreach (var header in request.Headers)
+            {
+                builder.AppendLine($"    {header.Key}: {header.Value}");
+            }
 
-    private void LogResponse(HttpContext context)
-    {
-        HttpResponse response = context.Response;
+            if (request.ContentLength > 0 && request.Body.CanRead)
+            {
+                // Read and log the request body content
+                request.Body.Position = 0;
+                using (var reader = new StreamReader(request.Body, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, leaveOpen: true))
+                {
+                    string bodyContent = await reader.ReadToEndAsync();
+                    builder.AppendLine("Body        :");
+                    builder.AppendLine(bodyContent);
+                    request.Body.Position = 0;
+                }
+            }
+            builder.AppendLine("-------------------------------");
 
-        StringBuilder responseLog = new StringBuilder();
-        responseLog.AppendLine("Outgoing Response:");
-        responseLog.AppendLine($"HTTP {response.StatusCode}");
-        responseLog.AppendLine($"Content-Type: {response.ContentType}");
-        responseLog.AppendLine($"Content-Length: {response.ContentLength}");
+            _logger.LogInformation(builder.ToString());
+        }
 
-        logger.LogInformation(responseLog.ToString());
+        private async Task LogResponseAsync(HttpContext context)
+        {
+            context.Response.Body.Seek(0, SeekOrigin.Begin);
+            var builder = new StringBuilder();
+            builder.AppendLine("----- Outgoing Response -----");
+            builder.AppendLine($"Timestamp   : {DateTime.UtcNow:O}");
+            builder.AppendLine($"Status Code : {context.Response.StatusCode}");
+
+            using (var reader = new StreamReader(context.Response.Body, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, leaveOpen: true))
+            {
+                string responseBody = await reader.ReadToEndAsync();
+                builder.AppendLine("Body        :");
+                builder.AppendLine(responseBody);
+                context.Response.Body.Seek(0, SeekOrigin.Begin);
+            }
+            builder.AppendLine("-------------------------------");
+
+            _logger.LogInformation(builder.ToString());
+        }
     }
 }

@@ -98,11 +98,9 @@ namespace Cuby.API
                 context.Database.EnsureCreated();
             }
 
-            app.UseMiddleware<RequestResponseLoggingMiddleware>();
+            app.UseMiddleware<RequestLoggingMiddleware>();
 
             app.UseHttpsRedirection();
-
-            app.UseAuthorization();
 
             app.MapControllers();
 
