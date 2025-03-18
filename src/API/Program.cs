@@ -1,8 +1,11 @@
+using System.Net;
 using Cuby.Data;
 using Cuby.Middlewares;
 using Cuby.Services.impl;
 using Cuby.Services.interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using OpenTelemetry;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -22,7 +25,7 @@ namespace Cuby.API
             // Configure PostgreSQL connection
             var connectionString = builder.Configuration.GetConnectionString("DbConnectionString");
             builder.Services.AddDbContext<RequestDbContext>(options =>
-                options.UseNpgsql(connectionString));
+                    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IRequestService, RequestService>();
 
             builder.Services.AddEndpointsApiExplorer();
@@ -30,17 +33,31 @@ namespace Cuby.API
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
-            // Configure open telemetry
-            builder.Services.AddOpenTelemetry()
-            .WithTracing(tracing => tracing
+            OpenTelemetryBuilder openTelemetry = builder.Services.AddOpenTelemetry();
+
+            openTelemetry.ConfigureResource(ressource =>
+            {
+                ressource.AddService(serviceName: "Cuby-capture-API",
+                                     serviceVersion: "1.0.0")
+                         .AddAttributes(new Dictionary<string, object>()
+                         {
+                             ["executionServer"] = Dns.GetHostName(),
+                             ["project"] = "Cuby-capture-API"
+                         });
+                ressource.AddAttributes(
+                [
+                    new KeyValuePair<string, object>("serverName", Environment.MachineName)
+                ]);
+            });
+            openTelemetry.WithTracing(tracing => tracing
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("CubyCaptureAPI"))
                 .AddAspNetCoreInstrumentation()
                 .AddHttpClientInstrumentation()
                 .AddOtlpExporter(options =>
                 {
-                    options.Endpoint = new Uri(builder.Configuration["OpenTelemetryExporterUrl"]!); 
-                }))
-            .WithMetrics(metrics => metrics
+                    options.Endpoint = new Uri(builder.Configuration["OpenTelemetryExporterUrl"]!);
+                }));
+            openTelemetry.WithMetrics(metrics => metrics
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("CubyCaptureAPI"))
                 .AddAspNetCoreInstrumentation()
                 .AddRuntimeInstrumentation()
@@ -54,9 +71,10 @@ namespace Cuby.API
                 logging.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("CubyCaptureAPI"));
                 logging.AddOtlpExporter(options =>
                 {
-                    options.Endpoint = new Uri(builder.Configuration["OpenTelemetryExporterUrl"]!); 
+                    options.Endpoint = new Uri(builder.Configuration["OpenTelemetryExporterUrl"]!);
                 });
             });
+
 
             var app = builder.Build();
 
