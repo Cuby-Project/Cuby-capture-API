@@ -17,7 +17,8 @@ namespace Cuby.API.Controllers
         /// Endpoint to initialize a new solve request
         /// </summary>
         /// <returns>the request ID</returns>
-        [HttpGet(Name = "init a request")]
+        [HttpGet("init", Name = "InitSolveRequest")]
+        [Produces("text/plain")]    
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<string>> InitSolveRequest()
