@@ -32,7 +32,7 @@ namespace Cuby.Tests.Integration
         public async Task InitSolveRequest_ShouldReturnRequestId()
         {
             // Act
-            HttpResponseMessage response = await _client.GetAsync("/api");
+            HttpResponseMessage response = await _client.GetAsync("/api/init");
 
             // Assert
             response.EnsureSuccessStatusCode();
