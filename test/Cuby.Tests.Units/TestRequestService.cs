@@ -4,7 +4,6 @@ using Cuby.Data.Models;
 using Cuby.Services.impl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Moq;
 
 namespace Cuby.Tests.Units
 {

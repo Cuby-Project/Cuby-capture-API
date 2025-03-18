@@ -40,16 +40,15 @@ namespace Cuby.Services.impl
             ArgumentNullException.ThrowIfNullOrWhiteSpace(requestId);
 
             Request request = await context.Requests.FindAsync(requestId) ?? throw new ArgumentException("Request not found");
-            try
+            if (request.StepsDone.Contains(step))
             {
-                request.StepsDone.Add(step);
-                await context.SaveChangesAsync();
-                logger.LogTrace("Step {Step} added to request {RequestId}", step, requestId);
-            } catch (Exception)
-            {
-                logger.LogError("Error adding step to request");
-                throw new ArgumentException("Error adding step to request");
+                throw new ArgumentException("Step already done");
             }
+
+            request.StepsDone.Add(step);
+            await context.SaveChangesAsync();
+            logger.LogTrace("Step {Step} added to request {RequestId}", step, requestId);
         }
+
     }
 }
