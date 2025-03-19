@@ -27,11 +27,10 @@ namespace Cuby.API.Controllers
             {
                 string id = await service.InitiateRequest();
                 await service.AddStepDone(id, RequestSteps.WaitingForUserCapture);
-                Console.WriteLine(id);
                 return Ok(id);
             } catch (Exception e)
             {
-                logger.LogError(e, "Initiate request throws an error");
+                logger.LogError(e, "IndexController.InitSolveRequest() Initiate request throws an error");
                 return Problem("error during the request initialisation proccess");
             }
         }

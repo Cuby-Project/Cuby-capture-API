@@ -18,16 +18,13 @@ namespace Cuby.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Ajout des services de contrôleurs
             builder.Services.AddControllers();
 
-            // Configuration de la connexion PostgreSQL
             builder.Services.AddDbContext<RequestDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionString")));
 
             builder.Services.AddTransient<IRequestService, RequestService>();
 
-            // Ajout de Swagger/OpenAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddOpenApi();
@@ -72,18 +69,15 @@ namespace Cuby.API
                 logging.IncludeFormattedMessage = true;
                 logging.IncludeScopes = true;
                 logging.ParseStateValues = true;
-                logging.AddConsoleExporter();
                 logging.AddOtlpExporter(options =>
                 {
                     options.Endpoint = new Uri(builder.Configuration["OpenTelemetryExporterUrl"]!);
                     options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
                 });
             });
-            builder.Logging.SetMinimumLevel(LogLevel.Information); // ou Debug si nécessaire
 
             var app = builder.Build();
 
-            // Configuration du pipeline HTTP
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
@@ -95,7 +89,6 @@ namespace Cuby.API
                 });
             }
 
-            // Application des migrations de base de données
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -103,11 +96,10 @@ namespace Cuby.API
                 context.Database.EnsureCreated();
             }
 
-            // Ajout des middlewares
             app.UseMiddleware<RequestLoggingMiddleware>();
+
             app.UseHttpsRedirection();
 
-            // Configuration des contrôleurs
             app.MapControllers();
 
             app.Run();

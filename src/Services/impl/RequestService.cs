@@ -16,7 +16,7 @@ namespace Cuby.Services.impl
         /// <inheritdoc/>
         public async Task<string> InitiateRequest()
         {
-            logger.LogTrace("Initiating request");
+            logger.LogInformation("RequestService.InitiateRequest() Initiating request");
             Request request = new Request()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -28,26 +28,27 @@ namespace Cuby.Services.impl
             await context.Requests.AddAsync(request);
             await context.SaveChangesAsync();
 
-            logger.LogTrace("Request added with ID: {RequestId}", request.Id);
+            logger.LogInformation("RequestService.InitiateRequest() Request added with ID: {RequestId}", request.Id);
             return request.Id;
         }
 
         /// <inheritdoc/>
         public async Task AddStepDone(string requestId, RequestSteps step)
         {
-            logger.LogTrace("Adding step {Step} to request {RequestId}", step, requestId);
+            logger.LogInformation("RequestService.AddStepDone() Adding step {Step} to request {RequestId}", step, requestId);
 
             ArgumentNullException.ThrowIfNullOrWhiteSpace(requestId);
 
             Request request = await context.Requests.FindAsync(requestId) ?? throw new ArgumentException("Request not found");
             if (request.StepsDone.Contains(step))
             {
+                logger.LogError("RequestService.AddStepDone() Step {Step} already done in request {RequestId}", step, requestId);
                 throw new ArgumentException("Step already done");
             }
 
             request.StepsDone.Add(step);
             await context.SaveChangesAsync();
-            logger.LogTrace("Step {Step} added to request {RequestId}", step, requestId);
+            logger.LogInformation("RequestService.AddStepDone() Step {Step} added to request {RequestId}", step, requestId);
         }
 
     }
