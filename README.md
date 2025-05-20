@@ -1,32 +1,66 @@
+# 📸 Cuby Capture API
+
 <div align="center">
 
-# Cuby capture API
-
----
-
-
-<img src="https://img.shields.io/github/stars/quentinformatique/Cuby-capture-API.svg">
-<img src="https://img.shields.io/github/forks/quentinformatique/Cuby-capture-API.svg">
-<img src="https://img.shields.io/github/issues/quentinformatique/Cuby-capture-API.svg">
-<img src="https://img.shields.io/github/last-commit/quentinformatique/Cuby-capture-API.svg">
+[![GitHub stars](https://img.shields.io/github/stars/Cuby-Project/Cuby-capture-API.svg)](https://github.com/Cuby-Project/Cuby-capture-API/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/Cuby-Project/Cuby-capture-API.svg)](https://github.com/Cuby-Project/Cuby-capture-API/network)
+[![GitHub issues](https://img.shields.io/github/issues/Cuby-Project/Cuby-capture-API.svg)](https://github.com/Cuby-Project/Cuby-capture-API/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Cuby-Project/Cuby-capture-API.svg)](https://github.com/Cuby-Project/Cuby-capture-API/commits/main)
 
 </div>
 
-**Cuby** a ElectronJS app for *Rubik's Cubes*, it contains everything you need to solve, time, learn and explore Rubik's Cubes.  I created this app using electronJS, it's still in development for now but can already use it, read the installation tutorial if you want to give it a try.
+## 📝 Description
 
-You are looking a the API part of Cuby, this only the api use for the solving capture tool and for the app, you can find the main app at : ![Cuby repo](https://github.com/quentinformatique/Cuby)
+Cuby Capture API is a specialized component of the Cuby ecosystem that handles the capture and processing of Rubik's Cube states. This API is designed to work seamlessly with both the main Cuby application and the web interface, providing robust cube state capture functionality.
 
-<div align="center">
--<a href="https://github.com/quentinformatique/Cuby/issues/new/choose">Report a bug</a>--<a href="https://github.com/quentinformatique/Cuby/issues/new/choose">Request a feature</a>-
-</div>
+## 🔗 Related Projects
 
-## Contributing
+- [Cuby Client](https://github.com/Cuby-Project/Cuby-Client) - Main desktop application
+- [Cuby Mobile App](https://github.com/Cuby-Project/Cuby-mobile-app) - Mobile version
+- [Cuby Recognition API](https://github.com/Cuby-Project/Cuby-recognition-API) - Color detection API
+- [Cuby Solve API](https://github.com/Cuby-Project/Cuby-solve-API) - Cube solving algorithm API
+- [Cuby Capture Website](https://github.com/Cuby-Project/Cuby-capture-website) - Web interface
 
----
+## ✨ Features
+
+- 📷 Real-time cube state capture
+- 🔄 Seamless integration with main app
+- 🌐 RESTful API endpoints
+- 🛡️ Error handling and validation
+- 📊 State processing and analysis
+- 🔒 Secure data transmission
+
+## 🚀 Getting Started
+
+### 🔧 Prerequisites
+
+- Python 3.10+
+- pip
+- Camera access (for capture functionality)
+
+### 🛠️ Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Cuby-Project/Cuby-capture-API.git
+```
+
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the application:
+
+```bash
+python run.py
+```
+
+## 🤝 Contributing
+
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -34,11 +68,11 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## Coming in the future
+## 📄 License
 
----
-This app is still in development, I have just finished the inner modelisation, so now the app is usable, but there is still a lot of progress too, if you have any suggestions fell free to open a pull request or an issue if you find a bug.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Version: v2.0
-## Developed by : *quentinformatique*
+## 📞 Support
 
+- [Report a bug](https://github.com/Cuby-Project/Cuby-capture-API/issues/new/choose)
+- [Request a feature](https://github.com/Cuby-Project/Cuby-capture-API/issues/new/choose)
