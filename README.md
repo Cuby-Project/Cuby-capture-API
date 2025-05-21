@@ -41,19 +41,16 @@ Cuby Capture API is a specialized component of the Cuby ecosystem that handles t
 ### 🛠️ Installation
 
 1. Clone the repository:
-
 ```bash
 git clone https://github.com/Cuby-Project/Cuby-capture-API.git
 ```
 
 2. Install dependencies:
-
 ```bash
 pip install -r requirements.txt
 ```
 
 3. Run the application:
-
 ```bash
 python run.py
 ```
@@ -68,11 +65,24 @@ Contributions are what make the open source community such an amazing place to l
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## 🔮 Roadmap
+
+- Enhanced capture accuracy
+- Additional cube type support
+- Improved error handling
+- Performance optimizations
+- Extended API endpoints
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+*quentinformatique*
 
 ## 📞 Support
 
 - [Report a bug](https://github.com/Cuby-Project/Cuby-capture-API/issues/new/choose)
 - [Request a feature](https://github.com/Cuby-Project/Cuby-capture-API/issues/new/choose)
+
